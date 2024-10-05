@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: onlineshop
+
+  datasource:
+    url: jdbc:h2:mem:onlineshop
+    driver-class-name: org.h2.Driver
+    username: onlineshop
+    password: onlineshop
+
+  h2:
+    console:
+      enabled: true
