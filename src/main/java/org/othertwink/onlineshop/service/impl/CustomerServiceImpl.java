@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    @Autowired
-    private CustomerRepo customerRepo;
+    private final CustomerRepo customerRepo;
+
+    public CustomerServiceImpl(CustomerRepo customerRepo) {
+        this.customerRepo = customerRepo;
+    }
 
     @Override
     @Transactional

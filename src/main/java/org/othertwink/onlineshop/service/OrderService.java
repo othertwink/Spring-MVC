@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface OrderService {
     Order createOrder(Customer customer, List<Product> productList, String shippingAddress);
+    Order createOrder(Order order);
     Order deleteOrder(Long orderId);
     Order updateOrder(Order order);
     Order findById(Long orderId);

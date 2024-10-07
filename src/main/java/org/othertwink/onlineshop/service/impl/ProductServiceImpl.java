@@ -16,8 +16,10 @@ import java.math.BigDecimal;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepo productRepo;
+    private final ProductRepo productRepo;
+    public ProductServiceImpl(ProductRepo productRepo) {
+        this.productRepo = productRepo;
+    }
 
     @Override
     @Transactional
@@ -27,6 +29,18 @@ public class ProductServiceImpl implements ProductService {
                 .description(description)
                 .price(price)
                 .quantityInStock(quantityInStock)
+                .build();
+        return productRepo.save(order);
+    }
+
+    @Override
+    @Transactional
+    public Product createProduct(Product product) {
+        Product order = Product.builder()
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .quantityInStock(product.getQuantityInStock())
                 .build();
         return productRepo.save(order);
     }

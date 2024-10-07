@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 
 public interface ProductService {
     Product createProduct(String name, String description, BigDecimal price, Integer quantityInStock);
+    Product createProduct(Product product);
 
     Page<Product> getAllProducts(Pageable pageable);
 

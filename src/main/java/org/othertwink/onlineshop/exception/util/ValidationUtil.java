@@ -12,8 +12,11 @@ import java.util.StringJoiner;
 @Component
 public class ValidationUtil {
 
-    @Autowired
-    private Validator validator;
+    private final Validator validator;
+
+    public ValidationUtil(Validator validator) {
+        this.validator = validator;
+    }
 
     public <T> void validate(T object) {
         Set<ConstraintViolation<T>> violations = validator.validate(object);

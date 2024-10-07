@@ -17,8 +17,11 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderRepo orderRepo;
+    private final OrderRepo orderRepo;
+
+    public OrderServiceImpl(OrderRepo orderRepo) {
+        this.orderRepo = orderRepo;
+    }
 
     @Override
     @Transactional
@@ -30,6 +33,23 @@ public class OrderServiceImpl implements OrderService {
                 .customer(customer)
                 .products(productList)
                 .shippingAddress(shippingAddress)
+                .totalPrice(totalPrice)
+                .orderStatus(OrderStatus.CREATED)
+                .build();
+        return orderRepo.save(newOrder);
+    }
+
+
+    @Override
+    @Transactional
+    public Order createOrder(Order order) {
+        BigDecimal totalPrice = order.getProducts().stream()
+                .map(Product::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        Order newOrder = Order.builder()
+                .customer(order.getCustomer())
+                .products(order.getProducts())
+                .shippingAddress(order.getShippingAddress())
                 .totalPrice(totalPrice)
                 .orderStatus(OrderStatus.CREATED)
                 .build();

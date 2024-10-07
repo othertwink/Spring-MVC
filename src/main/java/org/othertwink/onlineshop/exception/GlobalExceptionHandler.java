@@ -14,8 +14,11 @@ import java.util.Set;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @Autowired
     private Validator validator;
+
+    public GlobalExceptionHandler(Validator validator) {
+        this.validator = validator;
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {

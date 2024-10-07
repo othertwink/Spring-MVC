@@ -26,17 +26,23 @@ import java.io.IOException;
 @RequestMapping("/shop")
 public class RestController {
 
-    @Autowired
-    private ValidationUtil validationUtil;
+    private final ValidationUtil validationUtil;
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
+
+    public RestController(ValidationUtil validationUtil,
+                          ProductService productService,
+                          OrderService orderService,
+                          ObjectMapper objectMapper) {
+        this.validationUtil = validationUtil;
+        this.productService = productService;
+        this.orderService = orderService;
+        this.objectMapper = objectMapper;
+    }
 
     @GetMapping("/products/catalog")
     public ResponseEntity<Page<Product>> getAllProducts(
@@ -55,7 +61,7 @@ public class RestController {
     public ResponseEntity<String> createProduct(@RequestBody @JsonView(View.Create.class) String productJson) throws IOException {
         Product product = objectMapper.readerWithView(View.Create.class).readValue(productJson, Product.class);
         validationUtil.validate(product);
-        Product createdProduct = productService.createProduct(product.getName(), product.getDescription(), product.getPrice(), product.getQuantityInStock());
+        Product createdProduct = productService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(objectMapper.writeValueAsString(createdProduct));
     }
 
@@ -76,8 +82,8 @@ public class RestController {
     public ResponseEntity<String> createOrder(@RequestBody String orderJson) throws JsonProcessingException {
         Order order = objectMapper.readValue(orderJson, Order.class);
         validationUtil.validate(order);
-        order.getProducts().forEach(product -> validationUtil.validate(product));
-        Order createdOrder = orderService.createOrder(order.getCustomer(), order.getProducts(), order.getShippingAddress());
+        order.getProducts().forEach(validationUtil::validate);
+        Order createdOrder = orderService.createOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(objectMapper.writeValueAsString(createdOrder));
     }
 
