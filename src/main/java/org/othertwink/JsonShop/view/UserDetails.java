@@ -15,11 +15,13 @@ import java.util.Optional;
 @Component
 public class UserDetails {
 
-    @Autowired
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
+    private final OrderDAO orderDAO;
 
-    @Autowired
-    private OrderDAO orderDAO;
+    public UserDetails(UserDAO userDAO, OrderDAO orderDAO) {
+        this.userDAO = userDAO;
+        this.orderDAO = orderDAO;
+    }
 
     public UserDetailsDTO getUserDetails(Long userId) {
         var optUser = userDAO.findById(userId);

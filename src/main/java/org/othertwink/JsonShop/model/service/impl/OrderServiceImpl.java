@@ -27,7 +27,6 @@ public class OrderServiceImpl implements OrderService {
             if (optional.isPresent()) {
                 throw new IllegalArgumentException("Order with id " + id + " already exists");
             }
-
             Order transientOrder = Order.builder()
                     .products(products)
                     .cost(cost)

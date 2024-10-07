@@ -1,6 +1,5 @@
 package org.othertwink.JsonShop.model.service.impl;
 
-import jakarta.annotation.PostConstruct;
 import org.othertwink.JsonShop.model.entity.User;
 import org.othertwink.JsonShop.model.repository.UserDAO;
 import org.othertwink.JsonShop.model.service.UserService;
@@ -13,11 +12,10 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    // почему не прокидывается Autowired
-    private static UserDAO userDAO;
+    private final UserDAO userDAO;
 
     public UserServiceImpl (UserDAO userDAO) {
-        UserServiceImpl.userDAO = userDAO;
+        this.userDAO = userDAO;
     }
 
     @Transactional // по умолчанию read commited. допустимо ли грязное чтение?

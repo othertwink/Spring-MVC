@@ -22,35 +22,31 @@ import java.util.List;
 @RequestMapping("/users")
 public class RestController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final OrderService orderService;
+    private final UserSummary userSummaryView;
+    private final UserDetails userDetailsView;
 
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private UserSummary userSummaryView;
-
-    @Autowired
-    private UserDetails userDetailsView;
+    public RestController(UserService userService,
+                          OrderService orderService,
+                          UserSummary userSummaryView,
+                          UserDetails userDetailsView) {
+        this.userService = userService;
+        this.orderService = orderService;
+        this.userSummaryView = userSummaryView;
+        this.userDetailsView = userDetailsView;
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Order> createOrder(@Valid @RequestBody Order order) {
-        try {
-            Order createdOrder = orderService.createOrder(order.getId(), order.getProducts(), order.getCost(), order.getUserId());
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        Order createdOrder = orderService.createOrder(order.getId(), order.getProducts(), order.getCost(), order.getUserId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
     @GetMapping
     @JsonView(UserSummary.class)
     public ResponseEntity<List<User>> getUserSummary() {
         List<User> users = userSummaryView.getUserSummary();
-        if (users.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(users);
     }
 
@@ -58,39 +54,24 @@ public class RestController {
     @JsonView(UserDetails.class)
     public ResponseEntity<UserDetailsDTO> getUserDetails(@PathVariable Long id) {
         UserDetailsDTO userDetails = userDetailsView.getUserDetails(id);
-        if (userDetails == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(userDetails);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        try {
             User createdUser = userService.createUser(user.getName(), user.getEmail(), user.getAddress());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
-        try {
-            User updatedUser = userService.updateUser(id, user.getName(), user.getEmail());
-            return ResponseEntity.ok(updatedUser);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        User updatedUser = userService.updateUser(id, user.getName(), user.getEmail());
+        return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        try {
-            userService.deleteUser(id);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }
