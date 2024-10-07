@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface BookService {
     Book createBook(Long authorId, String title, String text);
+    Book createBook(Book book);
     Book deleteBook(Long id);
     Book updateBook(Long id, Long authorId, String title, String text);
     Book findById(Long id);

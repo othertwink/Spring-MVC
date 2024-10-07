@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/library")
 public class RestController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
 
-    @Autowired
-    private AuthorService authorService;
+    private final AuthorService authorService;
+    
+    public RestController(BookService bookService, AuthorService authorService) {
+        this.bookService = bookService;
+        this.authorService = authorService;
+    }
 
     @GetMapping("/books/catalog")
     public ResponseEntity<Page<Book>> getAllBooks(

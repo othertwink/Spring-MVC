@@ -15,6 +15,10 @@ public class BookServiceImpl implements BookService {
 
     private BookRepo bookRepo;
 
+    public BookServiceImpl(BookRepo bookRepo) {
+        this.bookRepo = bookRepo;
+    }
+
     @Override
     @Transactional
     public Book createBook(Long authorId, String title, String text) {
@@ -24,6 +28,17 @@ public class BookServiceImpl implements BookService {
                 .text(text)
                 .build();
         return bookRepo.save(book);
+    }
+
+    @Override
+    @Transactional
+    public Book createBook(Book book) {
+        Book createdBook = Book.builder()
+                .authorId(book.getAuthorId())
+                .title(book.getTitle())
+                .text(book.getText())
+                .build();
+        return bookRepo.save(createdBook);
     }
 
     @Override
