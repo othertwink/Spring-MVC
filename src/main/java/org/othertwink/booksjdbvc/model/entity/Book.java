@@ -1,4 +1,4 @@
-package org.othertwink.pageablebooks.model.entity;
+package org.othertwink.booksjdbvc.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,12 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "books")
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long authorId;
     private String title;
-
-    @Column(columnDefinition = "TEXT")
-    private String text;
+    private Long authorId;
 }

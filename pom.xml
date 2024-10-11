@@ -8,11 +8,11 @@
 		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.othertwink.pageablebooks</groupId>
-	<artifactId>pageablebooks</artifactId>
+	<groupId>org.othertwink.booksjdbvc</groupId>
+	<artifactId>booksjdbvc</artifactId>
 	<version>1.0</version>
-	<name>pageablebooks</name>
-	<description>Pageable implementation Spring MVC</description>
+	<name>booksjdbvc</name>
+	<description>JDBC implementation Spring MVC</description>
 	<url/>
 	<licenses>
 		<license/>

@@ -1,4 +1,4 @@
-package org.othertwink.pageablebooks.exception;
+package org.othertwink.booksjdbvc.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

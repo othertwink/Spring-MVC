@@ -1,13 +1,13 @@
-package org.othertwink.pageablebooks;
+package org.othertwink.booksjdbvc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PageableBooksApplication {
+public class BooksJDBC {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PageableBooksApplication.class, args);
+		SpringApplication.run(BooksJDBC.class, args);
 	}
 
 }
